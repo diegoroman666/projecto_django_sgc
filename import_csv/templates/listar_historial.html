@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Historial Futurista</title>
+
+    <link rel="icon" href="{% static "imagenes/logolibreria.png"%}"/>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet"/>
+
+    <style>
+        /* General Styles */
+        body {
+            background: linear-gradient(135deg, #141e30, #243b55);
+            color: #00f2fe;
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        nav {
+            background: linear-gradient(90deg, #1c1c2c, #3a3a5c);
+            padding: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar-brand, .nav-link {
+            color: #00f2fe !important;
+            text-shadow: 0 0 10px #00f2fe, 0 0 20px #00eaff;
+        }
+
+        .navbar-toggler-icon {
+            background-color: #00f2fe;
+        }
+
+        #current-time {
+        color: #00eaff;
+        font-size: 1.5rem;
+        font-family: 'Orbitron', sans-serif;
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-shadow: 0 0 10px #00f2fe, 0 0 20px #00eaff;
+    }
+
+    #current-time i {
+        font-size: 1.8rem;
+        color: #00f2fe;
+    }
+
+        h1 {
+            text-shadow: 0 0 10px #00eaff, 0 0 20px #00f2fe;
+            margin-top: 20px;
+        }
+
+        .container-fluid img {
+            filter: drop-shadow(0 0 10px #00eaff);
+        }
+
+        .table {
+            margin: 20px auto;
+            width: 95%;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        th, td {
+            padding: 15px;
+            color: #00eaff;
+            text-shadow: 0 0 5px #00f2fe;
+        }
+
+        th {
+            background: #141e30;
+            border-bottom: 2px solid #00f2fe;
+        }
+
+        tr:hover {
+            background: rgba(0, 0, 0, 0.7);
+            color: #ffffff;
+        }
+
+        .btn {
+            background: linear-gradient(90deg, #00f2fe, #4facfe);
+            border: none;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn:hover {
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            box-shadow: 0 0 15px #00f2fe, 0 0 30px #00eaff;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: linear-gradient(90deg, #141e30, #243b55);
+            color: #00f2fe;
+            padding: 10px 0;
+            font-size: 14px;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.5);
+            margin-top: auto;
+            text-align: center;
+        }
+
+    </style>
+
+    <script>
+        const botonCerrarSesion = () => {
+            if (window.confirm("¿Está seguro de querer cerrar la sesión?")) {
+                window.location.href = "/logout";
+            }
+        };
+
+        
+    // Función para actualizar la hora con estilo digital
+    const updateTime = () => {
+        const now = new Date();
+        const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        document.getElementById('current-time').innerHTML = `<i class="bi bi-clock"></i> ${formattedTime}`;
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+        setInterval(updateTime, 1000);
+    });
+
+    </script>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a href="/menu_admin">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Escudo_Oficial_Comuna_de_Rengo.png" alt="Escudo Comuna de Rengo" style="width:1cm; height:2cm;">
+            </a>
+            <span class="navbar-brand">👤 Usuario Logeado: {{ nomUsuario }}</span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link" href="/menu_admin">🏠 Inicio</a>
+                    <a class="nav-link" href="/listado">📂 Listado de Correspondencias</a>
+                    <a class="nav-link" href="#" onClick="botonCerrarSesion()">🚪 Cerrar Sesión</a>
+                </div>
+                <span id="current-time" class="ms-auto"></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% if his %}
+            <h1>📜 Historial de Acciones de Usuarios</h1>
+            <table class="table table-hover text-center">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Acción</th>
+                        <th>Tabla</th>
+                        <th>Fecha y Hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for x in his %}
+                    <tr>
+                        <td>{{ x.id }}</td>
+                        <td>{{ x.usuario.nombre_usuario }}</td>
+                        <td>{{ x.descripcion_historial }}</td>
+                        <td>{{ x.tabla_afectada_historial }}</td>
+                        <td>{{ x.fecha_hora_historial }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <h2 class="text-danger mt-5">⚠️ No hay acciones realizadas para mostrar.</h2>
+        {% endif %}
+    </div>
+
+    <footer>
+        🌐 Ilustre Municipalidad de Rengo © 2024
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</body>
+</html>

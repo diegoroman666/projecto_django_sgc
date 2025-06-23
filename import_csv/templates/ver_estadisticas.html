@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizador de Estadísticas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<style>
+
+body {
+            background: linear-gradient(135deg, #141e30, #243b55);
+            color: #00f2fe;
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        nav {
+            background: linear-gradient(90deg, #1c1c2c, #3a3a5c);
+            padding: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar-brand, .nav-link {
+            color: #00f2fe !important;
+            text-shadow: 0 0 10px #00f2fe, 0 0 20px #00eaff;
+        }
+
+        .navbar-toggler-icon {
+            background-color: #00f2fe;
+        }
+
+        #current-time {
+        color: #00eaff;
+        font-size: 1.5rem;
+        font-family: 'Orbitron', sans-serif;
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-shadow: 0 0 10px #00f2fe, 0 0 20px #00eaff;
+    }
+
+    #current-time i {
+        font-size: 1.8rem;
+        color: #00f2fe;
+    }
+
+
+    h1 {
+            text-shadow: 0 0 10px #00eaff, 0 0 20px #00f2fe;
+            margin-top: 20px;
+        }
+
+
+    .btn {
+            background: linear-gradient(90deg, #00f2fe, #4facfe);
+            border: none;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn:hover {
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            box-shadow: 0 0 15px #00f2fe, 0 0 30px #00eaff;
+        }
+
+
+footer {
+            background: linear-gradient(90deg, #141e30, #243b55);
+            color: #00f2fe;
+            padding: 10px 0;
+            font-size: 14px;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.5);
+            margin-top: auto;
+            text-align: center;
+        }
+
+        body {
+    background: linear-gradient(135deg, #141e30, #243b55);
+    color: #00f2fe;
+    font-family: 'Orbitron', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+nav {
+    background: linear-gradient(90deg, #1c1c2c, #3a3a5c);
+    padding: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.container {
+    flex-grow: 1;  /* Permite que el contenido crezca y ocupe el espacio disponible */
+    padding-bottom: 60px;  /* Asegura que haya espacio para el footer */
+}
+
+footer {
+    background: linear-gradient(90deg, #141e30, #243b55);
+    color: #00f2fe;
+    padding: 10px 0;
+    font-size: 14px;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+#barChart {
+    max-height: 400px;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .navbar-nav {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    #barChart {
+        height: 300px;  /* Ajustamos el tamaño del gráfico para pantallas pequeñas */
+    }
+}
+
+
+</style>
+
+<script>
+
+
+    const botonCerrarSesion = () => {
+        if (window.confirm("¿Está seguro de querer cerrar la sesión?")) {
+            window.location.href = "/index_copy";
+        }
+    };
+
+    
+// Función para actualizar la hora con estilo digital
+const updateTime = () => {
+    const now = new Date();
+    const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    document.getElementById('current-time').innerHTML = `<i class="bi bi-clock"></i> ${formattedTime}`;
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+    setInterval(updateTime, 1000);
+});
+
+
+
+</script>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Escudo_Oficial_Comuna_de_Rengo.png" alt="Escudo Comuna de Rengo" style="width:1cm; height:2cm;">
+
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <a class="nav-link" href="/menu_admin">🏠 Ir al menu principal</a>
+            <a class="nav-link" href="/listado">📂 Listado de Correspondencias</a>
+            <a class="nav-link" href="/grafico_circular">📂 Ir al grafico circular</a>
+            <a class="nav-link" href="#" onClick="botonCerrarSesion()">🚪 Cerrar Sesión</a>
+
+        </div>
+        
+        <span id="current-time" class="ms-auto"></span>
+
+
+        </div>
+        </div>
+        </div>
+    </nav>
+    
+    <div class="container mt-5">
+        <h1 class="text-center">Grafico de Barras de la Correspondencia 2024</h1>
+        
+        <div><p class="text-center mb-4">
+        Este gráfico permite visualizar la cantidad de registros de correspondencia agrupados por un atributo seleccionado. 
+        Puedes elegir el atributo de la tabla que deseas analizar en el eje X para ver las frecuencias de cada valor.
+    </p></div>
+        <form method="POST" class="my-4">
+            {% csrf_token %}
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="eje_x" class="form-label">Selecciona el Eje X:</label>
+                    <select name="eje_x" id="eje_x" class="form-select">
+                        {% for atributo in atributos %}
+                            <option value="{{ atributo }}">{{ atributo }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Generar Gráfico</button>
+            </div>
+        </form>
+
+        <!-- Gráfico -->
+        {% if labels and data %}
+            <div class="mt-5">
+                <canvas id="barChart"></canvas>
+                <script>
+                    const labels = JSON.parse('{{ labels|safe }}');
+                    const data = JSON.parse('{{ data|safe }}');
+
+                    new Chart(document.getElementById('barChart'), {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Cantidad de Registros',
+                                data: data,
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Atributo Seleccionado para Eje X'
+                                    }
+                                },
+                                y: {
+                                    title: {
+                                        display: true,
+                                        text: 'Cantidad de Ocurrencias'
+                                    },
+                                    beginAtZero: true
+                                }
+                            },
+                            plugins: {
+                                legend: { position: 'top' },
+                                tooltip: { enabled: true }
+                            }
+                        }
+                    });
+                </script>
+            </div>
+        {% endif %}
+    </div>
+
+    
+    
+
+</body>
+<footer style="text-align: center;">
+    🌐 Ilustre Municipalidad de Rengo © 2024
+</footer>
+</html>

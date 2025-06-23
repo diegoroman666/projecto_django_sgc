@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Registro de Correspondencias</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Estilos personalizados -->
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            background-color: #0b1276;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+        }
+
+        main {
+            flex: 1;
+            padding-bottom: 20px;
+        }
+
+        footer {
+            background: #141426;
+            padding: 20px;
+            border-top: 2px solid #007bff;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        .navbar {
+            background: #22213b;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar-brand, .nav-link, .navbar-text {
+            color: #ffffff !important;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .nav-link:hover, .navbar-brand:hover {
+            color: #00eaff !important;
+            text-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff;
+        }
+
+        h1 {
+            color: #ffcc00;
+            text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 40px;
+            margin: 40px auto 20px;
+            text-align: center;
+        }
+
+        .formulario {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0px 0px 20px 3px rgba(0, 123, 255, 0.6);
+            margin: auto;
+            max-width: 900px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffcc00;
+        }
+
+        input, textarea {
+            font-size: 16px;
+            padding: 10px;
+            color: #fff;
+            background-color: #282828;
+            border: 1px solid #007bff;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #007bff, #6610f2);
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            font-size: 28px;
+            font-family: 'Orbitron', sans-serif;
+            color: #28a745;
+            text-shadow: 0 0 10px #28a745, 0 0 20px #28a745, 0 0 30px #28a745;
+            animation: heartbeat 1.5s infinite;
+            margin-top: 15px;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        .circle.one { width: 200px; height: 200px; background: #007bff; top: 20%; left: 10%; }
+        .circle.two { width: 150px; height: 150px; background: #6610f2; bottom: 15%; right: 10%; animation-delay: 2s; }
+        .circle.three { width: 100px; height: 100px; background: #00eaff; bottom: 40%; left: 30%; animation-delay: 4s; }
+
+        @media (max-width: 768px) {
+            .formulario {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="circle one"></div>
+    <div class="circle two"></div>
+    <div class="circle three"></div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a href="/menu_usuario" class="navbar-brand">
+                <img src="{% static 'imagenes/logolibreria.png' %}" width="40px" alt="Logo">
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/menu_usuario">Ir al Menu Principal</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/form_registrar_copy">Registrar Correspondencia</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/listado_copy">Listado de Correspondencias</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="cerrarSesion()">Cerrar Sesión</a></li>
+                </ul>
+                <span class="navbar-text ms-4" id="current-date-time"></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Encabezado -->
+        <div class="container">
+            <h1>Registro de Correspondencias</h1>
+        </div>
+
+        <!-- Mensaje de Éxito -->
+        <!-- Encabezado -->
+
+
+    <!-- Mensaje de Éxito -->
+    <div class="container">
+        <div id="successMessage" class="success-message">
+            ¡Registro realizado exitosamente!
+        </div>
+    </div>
+
+    <!-- Formulario -->
+    <div class="container">
+        <div class="formulario">
+            <form id="registroForm" action="insertar_correspondencia/" method="post">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-3"><label>Fecha</label><input type="date" class="form-control" name="txtfecha" required></div>
+                    <!-- Otros campos... -->
+                </div>
+                <div class="row g-3">
+                    <!-- Primera Fila -->
+                    
+                    <div class="col-md-3">
+                        <label for="txtfechadocumento">Fecha de Documento</label>
+                        <input type="date" class="form-control" name="txtfechadocumento" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="txtfolio">Folio Interno</label>
+                        <input type="number" class="form-control" name="txtfolio" min="0" required>
+                    </div>
+
+                    <!-- Segunda Fila -->
+                    <div class="col-md-3">
+                        <label for="txtfoliooficina">Folio Oficina</label>
+                        <input type="number" class="form-control" name="txtfoliooficina" min="0" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtremitente">Remitente</label>
+                        <input type="text" class="form-control" name="txtremitente" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="txttipodocumento">Tipo y N° Documento</label>
+                        <input type="text" class="form-control" name="txttipodocumento" required>
+                    </div>
+
+                    <!-- Fila del Detalle -->
+                    <div class="col-12">
+                        <label for="txtdetalle">Detalle</label>
+                        <textarea name="txtdetalle" class="form-control detalle-input" required></textarea>
+                    </div>
+
+                    <!-- Última Fila -->
+                    <div class="col-md-3">
+                        <label for="txtdestino">Destino</label>
+                        <input type="text" class="form-control" name="txtdestino" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtresolucion">Resolución</label>
+                        <input type="text" class="form-control" name="txtresolucion" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="txtfechadespacho">Fecha de Despacho</label>
+                        <input type="date" class="form-control" name="txtfechadespacho" required>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary">Registrar Correspondencia</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>Ilustre Municipalidad De Rengo</p>
+    </footer>
+
+    <script>
+        const cerrarSesion = () => confirm("¿Está seguro de querer cerrar la sesión?") && (window.location.href = "/index");
+        document.getElementById("registroForm").onsubmit = e => {
+            e.preventDefault();
+            document.getElementById("successMessage").style.display = "block";
+            setTimeout(() => e.target.submit(), 1500);
+        };
+        setInterval(() => document.getElementById('current-date-time').textContent = new Date().toLocaleString('es-CL'), 1000);
+    </script>
+</body>
+</html>

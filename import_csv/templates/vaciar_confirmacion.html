@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Confirmación Mejorada</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"/>
+
+    <!-- Estilos Mejorados -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, #050505, #002222, #001111);
+            color: #00ffcc;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: #ff4444;
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #ff3333, 0 0 40px #ff0000;
+            animation: neon-blink 1.5s infinite alternate;
+            margin-top: 20px;
+        }
+
+        @keyframes neon-blink {
+            0% { text-shadow: 0 0 10px #ff3333, 0 0 20px #ff0000; }
+            100% { text-shadow: 0 0 20px #ff0000, 0 0 30px #ff4444; }
+        }
+
+        .btn {
+            display: inline-block;
+            margin: 30px 10px;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            color: white;
+            background: linear-gradient(90deg, #ff4444, #ff2222);
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 0 20px #ff4444;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 40px #ff6666;
+        }
+
+        .container-icons {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            gap: 100px;
+            margin-top: 70px; /* Bajamos los íconos */
+        }
+
+        .icon {
+            font-size: 5rem;
+            color: #00ffcc;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+        }
+
+        .file {
+            position: absolute;
+            font-size: 2.5rem;
+            color: #ffcc00;
+            animation: move-file 4s infinite;
+        }
+
+        @keyframes move-file {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(50px, -100px) rotate(15deg);
+            }
+            100% {
+                transform: translate(150px, 150px) rotate(45deg);
+                opacity: 0;
+            }
+        }
+
+        .file:nth-child(2) { animation-delay: 0.5s; }
+        .file:nth-child(3) { animation-delay: 1s; }
+        .file:nth-child(4) { animation-delay: 1.5s; }
+
+        footer {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            color: #00cccc;
+            font-size: 1rem;
+            text-shadow: 0 0 5px #00ffcc;
+        }
+    </style>
+</head>
+<body>
+    <!-- Título Principal -->
+    <h1>¡Registros Eliminados con Éxito!</h1>
+    <p>Todos los archivos se han vaciado correctamente en la papelera.</p>
+    <a href="/listado" class="btn">Volver al Listado de Correspondencias</a>
+    <a href="/menu_admin" class="btn">Ir al Inicio</a>
+
+
+    <!-- Contenedor de Iconos -->
+    <div class="container-icons">
+        <!-- Tarro de origen -->
+        <i class="bi bi-archive-fill icon"></i>
+
+        <!-- Archivos en movimiento -->
+        <i class="bi bi-file-earmark-fill file"></i>
+        <i class="bi bi-file-earmark-fill file"></i>
+        <i class="bi bi-file-earmark-fill file"></i>
+        <i class="bi bi-file-earmark-fill file"></i>
+
+        <!-- Papelera -->
+        <i class="bi bi-trash3-fill icon"></i>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Sistema de Gestión de Correspondencias 2024</p>
+    </footer>
+</body>
+</html>

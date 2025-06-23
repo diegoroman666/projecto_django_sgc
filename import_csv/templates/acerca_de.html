@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Acerca del Sistema</title>
+    <link rel="icon" href="{% static 'imagenes/logolibreria.png' %}"/>
+
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet"/>
+
+    <style>
+        /* General Styles */
+        body {
+            background: linear-gradient(135deg, #1f1c2c, #928dab);
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        }
+
+        .navbar-brand:hover, .nav-link:hover {
+            text-shadow: 0 0 15px white;
+        }
+
+        .datetime {
+            font-size: 0.9rem;
+            color: #f1e100;
+            text-shadow: 0 0 5px #f1e100;
+            margin-right: 15px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #f1e100;
+            text-shadow: 0 0 10px #f1e100, 0 0 20px #f1e100;
+            margin-bottom: 20px;
+        }
+
+        /* Contenido */
+        .container {
+            margin: 30px auto;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+        }
+
+        ul li {
+            background: none;
+            color: white;
+            font-size: 18px;
+            margin: 5px 0;
+        }
+
+        /* Footer fijo al fondo */
+        footer {
+            background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            padding: 10px;
+            margin-top: auto;
+        }
+    </style>
+
+    <script>
+        const actualizarFechaHora = () => {
+            const fecha = new Date();
+            document.getElementById("horaActual").textContent = fecha.toLocaleTimeString();
+            document.getElementById("fechaActual").textContent = fecha.toLocaleDateString();
+        };
+
+        setInterval(actualizarFechaHora, 1000);
+
+        const botonCerrarSesion = () => {
+            if (window.confirm("¿Está seguro de querer cerrar la sesión?")) {
+                window.location.href = "/logout";
+            }
+        };
+    </script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a href="/menu_admin" class="navbar-brand">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Escudo_Oficial_Comuna_de_Rengo.png" alt="Escudo Comuna de Rengo" style="width:1cm; height:2cm;">
+                Usuario Logeado: {{ nomUsuario }}
+            </a>
+            <span class="datetime" id="fechaActual"></span>
+            <span class="datetime" id="horaActual"></span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link" href="/menu_admin"><i class="bi bi-house-door-fill"></i> Inicio</a>
+                    <a class="nav-link" href="/form_registrar"><i class="bi bi-pencil-square"></i> Formulario de Registros</a>
+                    <a class="nav-link" href="/listado"><i class="bi bi-list-ul"></i> Listado de Correspondencias</a>
+                    <a class="nav-link" href="#" onClick="botonCerrarSesion()"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <div class="container text-center">
+        <h1>Acerca del Sistema</h1>
+        <p>
+            El <strong>Sistema de Gestión de Correspondencias</strong> está diseñado para agilizar y organizar el flujo de documentos dentro de la organización. 
+            Permite registrar, listar, buscar y analizar las correspondencias recibidas y enviadas.
+            Además, proporciona estadísticas e historial de operaciones realizadas, facilitando una gestión eficiente y ordenada.
+        </p>
+        <p>Entre las funcionalidades principales se encuentran:</p>
+        <ul class="list-group list-group-flush text-start">
+            <li class="list-group-item bg-transparent text-white"><i class="bi bi-check-circle"></i> Registro de correspondencias</li>
+            <li class="list-group-item bg-transparent text-white"><i class="bi bi-check-circle"></i> Listado y búsqueda avanzada</li>
+            <li class="list-group-item bg-transparent text-white"><i class="bi bi-check-circle"></i> Importación de archivos CSV</li>
+            <li class="list-group-item bg-transparent text-white"><i class="bi bi-check-circle"></i> Visualización de estadísticas</li>
+            <li class="list-group-item bg-transparent text-white"><i class="bi bi-check-circle"></i> Historial de operaciones</li>
+        </ul>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 Sistema de Registro de Correspondencias | Ilustre Municipalidad de Rengo</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

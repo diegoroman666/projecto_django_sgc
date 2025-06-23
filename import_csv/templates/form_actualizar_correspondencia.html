@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Actualizar Correspondencia</title>
+    <link rel="icon" href="{% static 'imagenes/logolibreria.png' %}"/>
+
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet"/>
+
+    <style>
+        /* General Styles */
+        body {
+            background: linear-gradient(135deg, #1f1c2c, #928dab);
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: white;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar-brand, .nav-link, .nav-item {
+            color: white !important;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        }
+
+        .navbar-brand:hover, .nav-link:hover {
+            text-shadow: 0 0 15px white;
+        }
+
+        .datetime {
+            font-size: 0.9rem;
+            color: #f1e100;
+            text-shadow: 0 0 5px #f1e100;
+            margin-right: 15px;
+        }
+
+        .formulario {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            width: 80%;
+            margin: auto;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            color: #f1e100;
+            text-shadow: 0 0 10px #f1e100, 0 0 20px #f1e100;
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #f1e100;
+            color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-control:focus {
+            border-color: #00f2fe;
+            box-shadow: 0 0 15px #00f2fe;
+        }
+
+        .btn-info {
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-info:hover {
+            background: linear-gradient(90deg, #0072ff, #00c6ff);
+            box-shadow: 0 0 20px #0072ff, 0 0 40px #00c6ff;
+        }
+
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        input[type="text"] {
+            text-transform: uppercase;
+        }
+    </style>
+
+    <script>
+        const botonCerrarSesion = () => {
+            if (window.confirm("¿Está seguro de querer cerrar la sesión?")) {
+                window.location.href = "/logout";
+            }
+        };
+
+        const actualizarFechaHora = () => {
+            const fecha = new Date();
+            document.getElementById("horaActual").textContent = fecha.toLocaleTimeString();
+            document.getElementById("fechaActual").textContent = fecha.toLocaleDateString();
+        };
+
+        setInterval(actualizarFechaHora, 1000);
+
+        const restringirInputNumeros = (e) => {
+            e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        };
+
+        const restringirFormatoFecha = (e) => {
+            e.target.value = e.target.value.replace(/[^0-9/-]/g, '');
+        };
+    </script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a href="/menu_admin" class="navbar-brand">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Escudo_Oficial_Comuna_de_Rengo.png" alt="Escudo Comuna de Rengo" style="width:1cm; height:2cm;">
+                Usuario Logeado: {{ nomUsuario }}
+            </a>
+            <span class="datetime" id="fechaActual"></span>
+            <span class="datetime" id="horaActual"></span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link" href="/menu_admin"><i class="bi bi-house-door-fill"></i> Inicio</a>
+                    <a class="nav-link" href="/form_registrar"><i class="bi bi-pencil-square"></i> Formulario de Registros</a>
+                    <a class="nav-link" href="/listado"><i class="bi bi-list-ul"></i> Listado de Correspondencias</a>
+                    <a class="nav-link" href="#" onClick="botonCerrarSesion()"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Formulario -->
+    <div class="formulario mt-4">
+        <h1 class="text-center">Actualización de Correspondencias</h1>
+        <form action="/actualizar_correspondencia/{{ encontrado.id }}" method="post">
+            {% csrf_token %}
+            <input value="{{ encontrado.fecha }}" class="form-control mb-3" type="text" placeholder="Digite la fecha (DD/MM/YYYY)" name="txtfecha" required oninput="restringirFormatoFecha(event)"/>
+            <input value="{{ encontrado.fechadocumento }}" class="form-control mb-3" type="text" placeholder="Digite la fecha del documento (DD/MM/YYYY)" name="txtfechadocumento" required oninput="restringirFormatoFecha(event)"/>
+            <input value="{{ encontrado.folio }}" class="form-control mb-3" type="text" placeholder="Digite el folio" name="txtfolio" required oninput="restringirInputNumeros(event)"/>
+            <input value="{{ encontrado.foliooficina }}" class="form-control mb-3" type="text" placeholder="Digite el folio de oficina" name="txtfoliooficina" required oninput="restringirInputNumeros(event)"/>
+            <input value="{{ encontrado.remitente }}" class="form-control mb-3" type="text" placeholder="Digite el remitente" name="txtremitente" required/>
+            <input value="{{ encontrado.tipodocumento }}" class="form-control mb-3" type="text" placeholder="Digite el tipo de documento" name="txttipodocumento" required/>
+            <input value="{{ encontrado.detalle }}" class="form-control mb-3" type="text" placeholder="Digite el detalle" name="txtdetalle" required/>
+            <input value="{{ encontrado.destino }}" class="form-control mb-3" type="text" placeholder="Digite el destino" name="txtdestino" required/>
+            <input value="{{ encontrado.resolucion }}" class="form-control mb-3" type="text" placeholder="Digite la resolución" name="txtresolucion" required/>
+            <input value="{{ encontrado.fechadespacho }}" class="form-control mb-3" type="text" placeholder="Digite la fecha de despacho (DD/MM/YYYY)" name="txtfechadespacho" required oninput="restringirFormatoFecha(event)"/>
+            <input type="submit" class="btn btn-info btn-lg w-100" value="Guardar Cambios"/>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 Sistema de Registro de Correspondencias RENGO </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</body>
+</html>

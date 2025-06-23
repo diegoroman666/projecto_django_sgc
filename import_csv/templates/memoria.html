@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memoria Anual 2024 - Sistema de Gestión de Correspondencia</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #141e30, #243b55);
+            color: #00f2fe;
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        nav {
+            background: linear-gradient(90deg, #1c1c2c, #3a3a5c);
+            padding: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar-brand, .nav-link {
+            color: #00f2fe !important;
+            text-shadow: 0 0 10px #00f2fe, 0 0 20px #00eaff;
+        }
+
+        .navbar-toggler-icon {
+            background-color: #00f2fe;
+        }
+
+        #current-time {
+            color: #00eaff;
+            font-size: 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 0 10px #00f2fe, 0 0 20px #00eaff;
+        }
+
+        #current-time i {
+            font-size: 1.8rem;
+            color: #00f2fe;
+        }
+
+        h1 {
+            text-shadow: 0 0 10px #00eaff, 0 0 20px #00f2fe;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .container {
+            flex-grow: 1;
+            padding-bottom: 60px;
+            margin: 0 20px;
+        }
+
+        footer {
+            background: linear-gradient(90deg, #141e30, #243b55);
+            color: #00f2fe;
+            padding: 10px 0;
+            font-size: 14px;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            background: linear-gradient(90deg, #00f2fe, #4facfe);
+            border: none;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn:hover {
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            box-shadow: 0 0 15px #00f2fe, 0 0 30px #00eaff;
+        }
+
+        #barChart {
+            max-height: 400px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .navbar-nav {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            #barChart {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link" href="/menu_admin">🏠 Ir al menú principal</a>
+                    <a class="nav-link" href="/listado">📂 Ir al listado</a>
+                    <a class="nav-link" href="/ver_estadisticas">📊 Ver gráfico de barras</a>
+                    <a class="nav-link" href="#" onClick="botonCerrarSesion()">🚪 Cerrar sesión</a>
+                </div>
+            </div>
+            <span id="current-time" class="ms-auto"></span>
+        </div>
+    </nav>
+
+    <!-- Contenedor principal -->
+    <div class="container mt-5">
+        <!-- Encabezado -->
+        <h1>Memoria Anual 2024 - Sistema de Gestión de Correspondencia</h1>
+
+        <div class="section">
+            <h2>Análisis Descriptivo</h2>
+            <p><strong>Volumen Total de Documentos Gestionados:</strong> 420 documentos</p>
+            <p><strong>Distribución por Tipo de Documento:</strong></p>
+            <ul>
+                <li>Decretos: 35%</li>
+                <li>Memos: 40%</li>
+                <li>Cartas: 25%</li>
+            </ul>
+            <p><strong>Picos de Actividad:</strong> Marzo, Junio, Octubre</p>
+            <p><strong>Departamentos con Mayor Correspondencia:</strong></p>
+            <ul>
+                <li>Tránsito: 30%</li>
+                <li>Salud: 25%</li>
+                <li>Rentas: 20%</li>
+            </ul>
+            <p>Observación: Se detectaron varios documentos con campos no especificados, lo que puede influir en la exactitud de este análisis. Es fundamental limpiar la tabla de datos, eliminando o corrigiendo registros vacíos si afectan el resultado esperado.</p>
+            <canvas id="barChart" width="400" height="200"></canvas>
+        </div>
+
+        <div class="section">
+            <h2>Análisis Predictivo</h2>
+            <p><strong>Predicción de Volumen Mensual:</strong> Se proyecta un aumento del 10% en la carga de correspondencia en marzo de 2025.</p>
+            <p><strong>Áreas Críticas:</strong> Los departamentos de Tránsito y Salud concentrarán el 55% de la carga total.</p>
+            <canvas id="lineChart" width="400" height="200"></canvas>
+        </div>
+
+        <div class="section">
+            <h2>Análisis Prescriptivo</h2>
+            <p><strong>Optimización de Recursos:</strong> Asignar personal adicional en los meses con picos de actividad, como marzo, junio y octubre.</p>
+            <p><strong>Automatización:</strong> Implementar herramientas para validar y completar datos automáticamente.</p>
+            <p><strong>Reducción de Errores:</strong> Priorizar la limpieza de campos vacíos y garantizar la integridad de los datos para mejorar la calidad del análisis.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        Memoria Sistema de Gestión de Correspondencia - 2024
+    </footer>
+
+    <!-- Script para gráficos -->
+    <script>
+        // Función para actualizar la hora con estilo digital
+        const updateTime = () => {
+            const now = new Date();
+            const formattedTime = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('current-time').innerHTML = `<i class="bi bi-clock"></i> ${formattedTime}`;
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            setInterval(updateTime, 1000);
+        });
+
+        // Gráfico de barras
+        const barCtx = document.getElementById('barChart').getContext('2d');
+        new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                datasets: [{
+                    label: 'Volumen Mensual de Documentos',
+                    data: [35, 40, 50, 38, 42, 48, 39, 44, 41, 50, 45, 38],
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                    }
+                }
+            }
+        });
+
+        // Gráfico de líneas
+        const lineCtx = document.getElementById('lineChart').getContext('2d');
+        new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                datasets: [{
+                    label: 'Predicción de Volumen Mensual',
+                    data: [36, 42, 55, 40, 45, 52, 42, 47, 44, 55, 50, 42],
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                    }
+                }
+            }
+        });
+
+        // Botón cerrar sesión
+        const botonCerrarSesion = () => {
+            if (window.confirm("¿Está seguro de querer cerrar la sesión?")) {
+                window.location.href = "/index_copy";
+            }
+        };
+    </script>
+</body>
+</html>

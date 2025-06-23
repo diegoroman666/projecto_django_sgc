@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Importar CSV - Sistema Futurista</title>
+    <link rel="icon" href="{% static 'imagenes/logolibreria.png' %}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        body, html {
+            height: 100%;
+            font-family: 'Orbitron', sans-serif;
+            background-color: #111;
+            color: #00ff00;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            text-align: center;
+            margin: 10px 0;
+            color: #ff007f;
+            text-shadow: 2px 2px 5px rgba(255, 0, 127, 0.8);
+        }
+
+        nav {
+            background: rgb(255, 255, 255);
+            padding: 10px;
+            border-bottom: 2px solid #00d4ff;
+        }
+
+        nav .navbar-brand {
+            font-size: 1rem;
+        }
+
+        nav img {
+            border: 2px solid #00d4ff;
+            border-radius: 50%;
+        }
+
+        .container {
+            max-width: 1200px; /* Aumento aún más el ancho del contenedor */
+            margin: 0 auto;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00d4ff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.6);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #00d4ff;
+            background: #111;
+            color: #00ff00;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        form button {
+            padding: 10px 15px;
+            background: #00d4ff;
+            color: #000;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        form button:hover {
+            background: #fff;
+            color: #00d4ff;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .btn-container a {
+            font-size: 0.9rem;
+            padding: 8px 12px;
+            color: #ff007f;
+            text-decoration: none;
+            border: 2px solid #ff007f;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-container a:hover {
+            background: #ff007f;
+            color: #fff;
+        }
+
+        #preview-container {
+            margin-top: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #ff007f;
+            border-radius: 10px;
+            padding: 10px;
+            width: 100%;
+            max-height: 400px; /* Ajustamos la altura para mostrar múltiples filas */
+            overflow-y: auto; /* Permitimos solo el scroll vertical */
+            overflow-x: hidden; /* Eliminamos el scroll horizontal */
+        }
+
+        #preview-container h2 {
+            font-size: 1rem; /* Reducimos el tamaño del título */
+            text-align: center;
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+
+        #preview-table {
+            width: 100%;
+            font-size: 0.8rem; /* Reducimos aún más el tamaño de la fuente */
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+
+        #preview-table th, #preview-table td {
+            padding: 4px; /* Reducimos el padding para hacer la tabla más compacta */
+            border: 1px solid #00d4ff;
+            text-align: center;
+            color: #fff;
+        }
+
+        #preview-table th {
+            background-color: #00d4ff;
+            color: #000;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background: rgba(0, 0, 0, 0.8);
+            border-top: 2px solid #00d4ff;
+            color: #00d4ff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a href="/listado">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Escudo_Oficial_Comuna_de_Rengo.png" alt="Escudo Comuna de Rengo" style="width:1cm; height:2cm;">
+            </a>
+            <span class="navbar-brand">Usuario Logeado</span>
+            <span class="navbar-brand">ADMIN</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Importar CSV</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" id="archivo_csv" name="archivo_csv" accept=".csv" required>
+            <button type="submit">Importar</button>
+        </form>
+
+        <div class="btn-container">
+            <a href="/form_registrar">Registrar Correspondencias</a>
+            <a href="/menu_admin">Menú Principal</a>
+            <a href="#" onclick="botonCerrarSesion()">Cerrar Sesión</a>
+        </div>
+
+        <!-- Vista previa -->
+        <div id="preview-container">
+            <h2>Vista Previa del Archivo</h2>
+            <table id="preview-table">
+                <!-- Datos de vista previa -->
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 Sistema de Registro de Correspondencias | Ilustre Municipalidad de Rengo</p>
+    </footer>
+
+    <script>
+        const botonCerrarSesion = () => {
+            if (window.confirm("¿Está seguro de querer cerrar la sesión?")) {
+                window.location.href = "/index";
+            }
+        };
+
+        // Lógica de vista previa
+        const inputArchivo = document.getElementById('archivo_csv');
+        const previewTable = document.getElementById('preview-table');
+
+        inputArchivo.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const contenido = e.target.result;
+                const filas = contenido.split('\n'); // Tomamos todas las filas del archivo CSV
+                previewTable.innerHTML = '';
+
+                filas.forEach((fila, index) => {
+                    const columnas = fila.split(',');
+                    const tr = document.createElement('tr');
+
+                    columnas.forEach(columna => {
+                        const celda = document.createElement(index === 0 ? 'th' : 'td');
+                        celda.textContent = columna.trim();
+                        tr.appendChild(celda);
+                    });
+
+                    previewTable.appendChild(tr);
+                });
+            };
+
+            reader.readAsText(file);
+        });
+    </script>
+</body>
+</html>

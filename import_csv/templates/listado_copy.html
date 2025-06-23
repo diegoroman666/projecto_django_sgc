@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% load static %}
+        <title>Listado</title>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        <link rel="icon" href="{% static "imagenes/logolibreria.png"%}"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                background-color: #04023c;
+            }
+
+            main {
+                flex: 1;
+            }
+
+            footer {
+                background: #141426;
+                padding: 20px;
+                border-top: 2px solid #007bff;
+                text-align: center;
+                margin-top: 50px;
+                color: #ffffff;
+            }
+
+            .navbar {
+            background: #22213b;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar-brand, .nav-link, .navbar-text {
+            color: #ffffff !important;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .nav-link:hover, .navbar-brand:hover {
+            color: #00eaff !important;
+            text-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff;
+        }
+
+        h1 {
+            color: #ffcc00;
+            text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 40px;
+            margin: 40px auto 20px;
+            text-align: center;
+        }
+
+            .date-time {
+                font-size: 16px;
+                font-weight: bold;
+                color: #ffffff;
+            }
+
+            h1 {
+                text-shadow: 0 0 10px #00eaff, 0 0 20px #00eaff;
+                font-family: 'Orbitron', sans-serif;
+                color: #00eaff;
+                font-size: 40px;
+            }
+
+            .dropdown-item {
+                color: #ffffff;
+                font-size: 20px;
+                transition: background 0.3s;
+            }
+
+            .dropdown-item:hover {
+                background: #007bff;
+                color: #ffffff;
+            }
+
+            header h1 {
+                font-size: 2.5rem;
+                margin: 0;
+                color: #FFFFFF;
+                text-shadow: 2px 2px #000;
+            }
+
+            .btn-primary {
+                background: linear-gradient(to right, #007bff, #6610f2);
+                border: none;
+            }
+
+            .btn-primary:hover {
+                background: linear-gradient(to right, #6610f2, #007bff);
+            }
+
+            .custom-table {
+                width: 80%;
+                margin: 20px auto;
+                background-color: #22213b;
+                color: white;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            }
+
+            .custom-table th {
+                color: #e5e4e2;
+                font-weight: bold;
+                text-shadow: 0 0 5px #e5e4e2, 0 0 10px #e5e4e2;
+            }
+
+            .custom-table td {
+                color: white;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .custom-table tr:hover {
+                background-color: #ff6200;
+                color: black;
+            }
+
+            .btn-lg {
+                color: white;
+                background-color: #ff6200;
+                border: none;
+            }
+
+            .btn-lg:hover {
+                background-color: #d45d00;
+            }
+
+            .filter-form {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                margin: 40px 0;
+            }
+
+            .filter-container {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                background-color: #22213b;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            }
+
+            .filter-form input {
+                flex: 1;
+                font-size: 1.2rem;
+                padding: 10px;
+                border: none;
+                border-radius: 5px;
+            }
+
+            .filter-form .btn {
+                flex-shrink: 0;
+                padding: 10px 20px;
+                font-size: 1.2rem;
+                border-radius: 5px;
+            }
+        </style>
+
+        <script>
+            const botonEliminar = (id) => {
+                if (window.confirm("¿Está Seguro De Querer Eliminar El Registro?")) {
+                    window.location.href = "/eliminar_correspondencia_copy/" + id;
+                }
+            };
+
+            const botonCerrarSesion = () => {
+                if (window.confirm("¿Está Seguro De Querer Cerrar La Sesión?")) {
+                    window.location.href = "/index";
+                }
+            };
+        </script>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <a href="/menu_usuario">
+                    <img src="{% static 'imagenes/logolibreria.png' %}" width="50px" style="margin-right:10px;" alt="Logo"/>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/menu_usuario">Ir al Menu Principal</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/form_registrar_copy">Registrar Correspondencia</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/listado_copy">Listado de Correspondencias</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="botonCerrarSesion()">Cerrar Sesión</a>
+                        </li>
+                    </ul>
+                    <div class="date-time">
+                        <i class="bi bi-clock"></i>
+                        <span id="current-date-time"></span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main>
+            <div class="filter-form">
+                <div class="filter-container">
+                    <form action="/listado_copy/filtroContenga" method="post" class="d-flex w-100">
+                        {% csrf_token %}
+                        <input type="text" name="txtfil" placeholder="Buscar remitente" required class="form-control form-control-lg"/>
+                        <button type="submit" class="btn btn-primary btn-lg">Filtrar</button>
+                    </form>
+                </div>
+            </div>
+
+            {% if r2 %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <h5>{{ r2 }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+
+            {% if cor %}
+                <h4 class="text-center text-white">LISTADO DE CORRESPONDENCIAS</h4>
+                <table class="table table-hover text-center custom-table">
+                    <thead>
+                        <tr>
+                            <th>FECHA</th>
+                            <th>FECHA DE DOCUMENTO</th>
+                            <th>FOLIO INTERNO</th>
+                            <th>FOLIO OFICINA DE PARTES</th>
+                            <th>REMITENTE</th>
+                            <th>TIPO DE DOCUMENTO Y NÚMERO</th>
+                            <th>DETALLE</th>
+                            <th>DESTINO</th>
+                            <th>RESOLUCIÓN</th>
+                            <th>FECHA DE DESPACHO</th>
+                            <th>ELIMINAR</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for x in cor %}
+                            <tr>
+                                <td>{{ x.fecha }}</td>
+                                <td>{{ x.fechadocumento }}</td>
+                                <td>{{ x.folio }}</td>
+                                <td>{{ x.foliooficina }}</td>
+                                <td>{{ x.remitente }}</td>
+                                <td>{{ x.tipodocumento }}</td>
+                                <td>{{ x.detalle }}</td>
+                                <td>{{ x.destino }}</td>
+                                <td>{{ x.resolucion }}</td>
+                                <td>{{ x.fechadespacho }}</td>
+                                <td>
+                                    <button type="button" onClick="botonEliminar({{ x.id }})" class="btn btn-lg">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <h2 class="text-center text-danger">No Hay Registros De Correspondencias Para Listar</h2>
+            {% endif %}
+        </main>
+
+        <footer>
+            <p>Ilustre Municipalidad De Rengo</p>
+        </footer>
+
+        <script>
+            const updateDateTime = () => {
+                const now = new Date();
+                const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+                const time = now.toLocaleTimeString('es-CL', options);
+                const date = now.toLocaleDateString('es-CL');
+                document.getElementById('current-date-time').textContent = `${date} ${time}`;
+            };
+
+            setInterval(updateDateTime, 1000);
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    </body>
+</html>

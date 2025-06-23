@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Inicio de Sesión - Futurista</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet"/>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #004d99, #ffcc00);
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .background-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .background-shapes div {
+            position: absolute;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: move 20s linear infinite;
+        }
+
+        .background-shapes .shape1 {
+            width: 200px;
+            height: 200px;
+            top: 10%;
+            left: 15%;
+            background: rgba(255, 204, 0, 0.2);
+        }
+
+        .background-shapes .shape2 {
+            width: 300px;
+            height: 300px;
+            bottom: 20%;
+            right: 10%;
+            background: rgba(0, 77, 153, 0.2);
+        }
+
+        .background-shapes .shape3 {
+            width: 100px;
+            height: 100px;
+            top: 50%;
+            left: 70%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes move {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            50% {
+                transform: translate(20px, -20px) rotate(180deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            width: 400px;
+            text-align: center;
+        }
+
+        h1, h2 {
+            font-size: 2rem;
+            color: #ffcc00;
+            text-shadow: 0 0 10px #ffcc00, 0 0 20px #004d99;
+            margin-bottom: 20px;
+        }
+
+        .welcome-icon {
+            font-size: 3rem;
+            color: #ffcc00;
+        }
+
+        .form-control {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #ffcc00;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 10px #004d99, 0 0 20px #ffcc00;
+            border-color: #ffcc00;
+        }
+
+        .btn-info {
+            background: linear-gradient(90deg, #ffcc00, #004d99);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-info:hover {
+            background: linear-gradient(90deg, #004d99, #ffcc00);
+            box-shadow: 0 0 20px #004d99, 0 0 40px #ffcc00;
+        }
+
+        .alert-danger {
+            background: rgba(255, 0, 0, 0.8);
+            border: none;
+            color: white;
+            font-weight: bold;
+            margin-top: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .alert-danger .bi {
+            margin-right: 5px;
+        }
+
+        .footer-icon {
+            font-size: 1.5rem;
+            color: #004d99;
+            margin-top: 20px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-shapes">
+        <div class="shape1"></div>
+        <div class="shape2"></div>
+        <div class="shape3"></div>
+    </div>
+
+    <!-- Contenedor principal -->
+    <div class="container">
+        <h1><i class="bi bi-person-lines-fill welcome-icon"></i></h1>
+        <h2>Bienvenido al Sistema de Gestión de Correspondencias</h2>
+        <p class="text-info">Inicie sesion para continuar</p>
+        
+        <form action="/login" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <i class="bi bi-person-fill"></i>
+                <input class="form-control form-control-lg text-center" type="text" placeholder="Nombre de Usuario" name="txtusu" required/>
+            </div>
+            <div class="mb-3">
+                <i class="bi bi-lock-fill"></i>
+                <input class="form-control form-control-lg text-center" type="password" placeholder="Contraseña" name="txtpas" required/>
+            </div>
+            <button type="submit" class="btn btn-info btn-lg w-100">
+                <i class="bi bi-box-arrow-in-right"></i> Acceder
+            </button>
+        </form>
+
+        {% if r2 %}
+            <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                <i class="bi bi-exclamation-triangle-fill"></i> {{ r2 }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+
+        <div class="footer-icon">
+            <i class="bi bi-building"></i> Municipalidad de Rengo 2024
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+</body>
+</html>

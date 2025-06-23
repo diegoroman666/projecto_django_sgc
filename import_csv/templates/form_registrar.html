@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registre su Correspondencia</title>
+    <link rel="icon" href="{% static 'imagenes/logolibreria.png' %}"/>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet"/>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #001f3f);
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+        }
+
+        .navbar-brand:hover, .nav-link:hover {
+            text-shadow: 0 0 15px white;
+        }
+
+        .datetime {
+            font-size: 0.9rem;
+            color: #f1e100;
+            margin-right: 15px;
+        }
+
+        .formulario {
+            background: rgba(0, 31, 63, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            margin: auto;
+            margin-top: 20px;
+            max-width: 1100px;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        label {
+            font-weight: bold;
+            color: #00ffff;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .form-control:focus {
+            border-color: #00ffff;
+            box-shadow: 0 0 10px #00ffff;
+            outline: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #003366, #0077cc);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0077cc, #00ffff);
+            box-shadow: 0 0 15px #00ffff;
+        }
+
+        footer {
+            background: rgba(0, 31, 63, 0.9);
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+    </style>
+
+    <script>
+        const botonCerrarSesion = () => {
+            if (window.confirm("¿Está seguro de querer cerrar la sesión?")) {
+                window.location.href = "/logout";
+            }
+        };
+
+        const actualizarFechaHora = () => {
+            const fecha = new Date();
+            document.getElementById("horaActual").textContent = fecha.toLocaleTimeString();
+            document.getElementById("fechaActual").textContent = fecha.toLocaleDateString();
+        };
+
+        setInterval(actualizarFechaHora, 1000);
+    </script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a href="/menu_admin" class="navbar-brand">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/Escudo_Oficial_Comuna_de_Rengo.png" alt="Escudo Comuna de Rengo" style="width:1cm; height:2cm;">
+                Usuario Logeado: {{ nomUsuario }}
+            </a>
+            <span class="datetime" id="fechaActual"></span>
+            <span class="datetime" id="horaActual"></span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link" href="/menu_admin"><i class="bi bi-house-door-fill"></i> Volver al menu principal</a>
+                    <a class="nav-link" href="/form_registrar"><i class="bi bi-pencil-square"></i> Formulario de Registros</a>
+                    <a class="nav-link" href="/listado"><i class="bi bi-list-ul"></i> Listado de Correspondencias</a>
+                    <a class="nav-link" href="#" onClick="botonCerrarSesion()"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Formulario -->
+    <div class="container formulario">
+        <h1 class="text-center mb-4">Registre Su Correspondencia</h1>
+        {% if r %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <h5>{{ r }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+
+        <form method="POST" action="{% url 'insertar_correspondencia' %}">
+            {% csrf_token %}
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label for="txtfecha">📅 Fecha:</label>
+                    <input type="date" class="form-control" name="txtfecha" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="txtfechadocumento">📂 Fecha del Documento:</label>
+                    <input type="date" class="form-control" name="txtfechadocumento" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="txtfolio">📜 Folio Interno:</label>
+                    <input type="text" class="form-control" name="txtfolio" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="txtfoliooficina">🏢 Folio Oficina de Partes:</label>
+                    <input type="text" class="form-control" name="txtfoliooficina" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="txtremitente">✉️ Remitente:</label>
+                    <input type="text" class="form-control" name="txtremitente" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="txttipodocumento">📑 Tipo de Documento:</label>
+                    <input type="text" class="form-control" name="txttipodocumento" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="txtdetalle">📝 Detalle:</label>
+                    <textarea class="form-control" name="txtdetalle" rows="3" required></textarea>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label for="txtdestino">📍 Destino:</label>
+                    <input type="text" class="form-control" name="txtdestino" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="txtresolucion">🛠️ Resolución:</label>
+                    <input type="text" class="form-control" name="txtresolucion" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="txtfechadespacho">📤 Fecha de Despacho:</label>
+                    <input type="date" class="form-control" name="txtfechadespacho" required>
+                </div>
+                <div class="col-md-3 text-center">
+                    <button type="submit" class="btn btn-primary btn-lg w-100 mt-4">📤 Enviar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 Sistema de Registro de Correspondencias RENGO</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
